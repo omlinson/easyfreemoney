@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Have You Been Hacked?</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #f06, #4a90e2);
+            color: white;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .cta {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 1rem;
+            color: white;
+            text-decoration: none;
+            background-color: #ff5c5c;
+            border-radius: 25px;
+            transition: background-color 0.3s;
+        }
+
+        .cta:hover {
+            background-color: #e04747;
+        }
+
+        .info {
+            margin-top: 40px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Have you been hacked?</h1>
+        <a href="#" class="cta">Find out now</a>
+        <div class="info">
+            <p><strong>Here's some information about you and your device:</strong></p>
+            <p id="user-info">Loading...</p>
+        </div>
+    </div>
+
+<script>
+    function getDeviceType() {
+        const userAgent = navigator.userAgent.toLowerCase();
+        if (userAgent.includes("iphone")) return "iPhone";
+        if (userAgent.includes("ipad")) return "iPad";
+        if (userAgent.includes("android")) return "Android Device";
+        if (userAgent.includes("windows")) return "Windows PC";
+        if (userAgent.includes("macintosh") || userAgent.includes("mac os")) return "Mac";
+        return "Unknown Device";
+    }
+
+    async function getBatteryInfo() {
+        try {
+            if (navigator.getBattery) {
+                const battery = await navigator.getBattery();
+                return `${Math.round(battery.level * 100)}%`;
+            }
+        } catch (e) {
+            console.error("Battery API error:", e);
+        }
+        return "Unavailable";
+    }
+
+    async function displayUserInfo() {
+        const batteryLife = await getBatteryInfo();
+        const userInfo = {
+            device: getDeviceType(),
+            language: navigator.language,
+            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            batteryLife: batteryLife,
+        };
+
+        const userInfoText = `You are using a <strong>${userInfo.device}</strong> browsing in <strong>${userInfo.language}</strong> in <strong>${userInfo.timeZone}</strong> time zone.<br/> You have <strong>${userInfo.batteryLife}</strong> battery life.`;
+
+        document.getElementById("user-info").innerHTML = userInfoText;
+    }
+
+    displayUserInfo();
+</script>
+
+</body>
+</html>
