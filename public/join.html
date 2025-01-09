@@ -8,59 +8,106 @@
     <style>
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
+            font-family: "Courier New", Courier, monospace;
+            background-color: #00000a;
+            color: #00ff00;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: linear-gradient(135deg, #f06, #4a90e2);
-            color: white;
             text-align: center;
         }
 
         .container {
-            max-width: 600px;
+            max-width: 500px;
         }
 
-        h1 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-        }
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #00ff00;
+    text-shadow: 0 0 1px #00ff00, 0 0 20px rgba(0, 255, 0, 0.5);
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: inline-block;
+    background: none; /* Removed the semi-transparent background */
+}
 
-        .cta {
-            display: inline-block;
-            padding: 15px 30px;
-            font-size: 1rem;
-            color: white;
-            text-decoration: none;
-            background-color: #ff5c5c;
-            border-radius: 25px;
-            transition: background-color 0.3s;
-        }
 
-        .cta:hover {
-            background-color: #e04747;
-        }
+.cta {
+    display: inline-block;
+    margin: 20px auto;
+    padding: 15px 30px;
+    font-size: 1.5rem; /* Increased font size */
+	font-weight: bold;
+    color: #0a0a0a;
+    text-decoration: none;
+    background: linear-gradient(90deg, #00ff00, #00cc00); /* Gradient for more attention */
+    border: 2px solid #00ff00; /* Highlighted border */
+    border-radius: 10px; /* More rounded edges */
+    box-shadow: 0 0 20px #00ff00; /* Glowing effect */
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.3s, box-shadow 0.3s;
+}
+
+.cta:hover {
+    background: linear-gradient(90deg, #00cc00, #00ff00); /* Reverse gradient on hover */
+    box-shadow: 0 0 30px #00ff00; /* Stronger glow */
+    transform: scale(1.1); /* Slight enlargement */
+}
+
 
         .info {
-            margin-top: 40px;
-            background: rgba(0, 0, 0, 0.7);
+            margin-top: 30px;
             padding: 20px;
-            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #00ff00;
+            border-radius: 5px;
             font-size: 0.9rem;
+            color: #00ff00;
+            text-align: left;
+            font-family: "Courier New", Courier, monospace;
+            white-space: pre-line;
+        }
+
+        .info-header {
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+            text-decoration: underline;
+        }
+
+#user-info {
+    display: inline-block; /* Ensures content centers properly */
+    text-align: left; /* Aligns details neatly within the box */
+    line-height: 1.5; /* Controls spacing between lines */
+}
+
+
+        .decline-link {
+            margin-top: 20px;
+            display: inline-block;
+            color: #1e1d29;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: opacity 0.3s;
+        }
+
+        .decline-link:hover {
+            opacity: 0.7;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Are you hacked?</h1>
-        <a href="../index.html" class="cta">Pay $5 to find out</a>
-        <a href="../decllined.html" class="cta">Decline</a>      
+        <h1>JUST GOT HACKED?</h1>
+        <a href="../approved.html" class="cta">PAY $5 TO FIND OUT</a>
         <div class="info">
-            <p><strong>Here's some information about you and your device:</strong></p>
+            <div class="info-header">DEVICE INFORMATION:</div>
             <p id="user-info">Loading...</p>
         </div>
+ <a href="../declined.html" class="decline-link">Decline</a>
     </div>
 
 <script>
@@ -86,22 +133,27 @@
         return "Unavailable";
     }
 
-    async function displayUserInfo() {
-        const batteryLife = await getBatteryInfo();
-        const userInfo = {
-            device: getDeviceType(),
-            language: navigator.language,
-            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-            batteryLife: batteryLife,
-        };
+async function displayUserInfo() {
+    const batteryLife = await getBatteryInfo();
+    const userInfo = {
+        "Device": getDeviceType(),
+        "Language": navigator.language,
+        "Time Zone": Intl.DateTimeFormat().resolvedOptions().timeZone,
+    };
 
-        const userInfoText = `You are using a <strong>${userInfo.device}</strong> browsing in <strong>${userInfo.language}</strong> in <strong>${userInfo.timeZone}</strong> time zone.<br/> You have <strong>${userInfo.batteryLife}</strong> battery life.`;
-
-        document.getElementById("user-info").innerHTML = userInfoText;
+    // Only include "Battery Life" if it's not 100%
+    if (batteryLife !== "100%") {
+        userInfo["Battery Life"] = batteryLife;
     }
+
+    const formattedInfo = Object.entries(userInfo)
+        .map(([key, value]) => `${key.padEnd(15)}: ${value}`)
+        .join("\n");
+
+    document.getElementById("user-info").textContent = formattedInfo;
+}
 
     displayUserInfo();
 </script>
-
 </body>
 </html>
