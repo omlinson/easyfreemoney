@@ -1,159 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow" />
-    <title>JOIN FOR EASY FREE $$$</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: "Courier New", Courier, monospace;
-            background-color: #00000a;
-            color: #00ff00;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            text-align: center;
-        }
-
-        .container {
-            max-width: 500px;
-        }
-
-h1 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    color: #00ff00;
-    text-shadow: 0 0 1px #00ff00, 0 0 20px rgba(0, 255, 0, 0.5);
-    padding: 10px 20px;
-    border-radius: 5px;
-    display: inline-block;
-    background: none; /* Removed the semi-transparent background */
-}
-
-
-.cta {
-    display: inline-block;
-    margin: 20px auto;
-    padding: 15px 30px;
-    font-size: 1.5rem; /* Increased font size */
-	font-weight: bold;
-    color: #0a0a0a;
-    text-decoration: none;
-    background: linear-gradient(90deg, #00ff00, #00cc00); /* Gradient for more attention */
-    border: 2px solid #00ff00; /* Highlighted border */
-    border-radius: 10px; /* More rounded edges */
-    box-shadow: 0 0 20px #00ff00; /* Glowing effect */
-    cursor: pointer;
-    transition: transform 0.2s, background-color 0.3s, box-shadow 0.3s;
-}
-
-.cta:hover {
-    background: linear-gradient(90deg, #00cc00, #00ff00); /* Reverse gradient on hover */
-    box-shadow: 0 0 30px #00ff00; /* Stronger glow */
-    transform: scale(1.1); /* Slight enlargement */
-}
-
-
-        .info {
-            margin-top: 30px;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid #00ff00;
-            border-radius: 5px;
-            font-size: 0.9rem;
-            color: #00ff00;
-            text-align: left;
-            font-family: "Courier New", Courier, monospace;
-            white-space: pre-line;
-        }
-
-        .info-header {
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 10px;
-            text-decoration: underline;
-        }
-
-#user-info {
-    display: inline-block; /* Ensures content centers properly */
-    text-align: left; /* Aligns details neatly within the box */
-    line-height: 1.5; /* Controls spacing between lines */
-}
-
-
-        .decline-link {
-            margin-top: 20px;
-            display: inline-block;
-            color: #1e1d29;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: opacity 0.3s;
-        }
-
-        .decline-link:hover {
-            opacity: 0.7;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>JUST GOT HACKED?</h1>
-        <a href="../approved.html" class="cta">PAY $5 TO FIND OUT</a>
-        <div class="info">
-            <div class="info-header">DEVICE INFORMATION:</div>
-            <p id="user-info">Loading...</p>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="robots" content="noindex, nofollow" />
+        <title>JOIN FOR EASY FREE $$$</title>
+        <link rel="stylesheet" href="style/styles.css">
+    </head>
+    <body>
+        <div class="container">
+            <h1>JUST GOT HACKED?</h1>
+            <a href="./approved.html" class="cta">PAY $5 TO FIND OUT</a>
+            <div class="info">
+                <div class="info-header">DEVICE INFORMATION:</div>
+                <p id="user-info">Loading...</p>
+            </div>
+    <a href="./declined.html" class="decline-link">Decline</a>
         </div>
- <a href="../declined.html" class="decline-link">Decline</a>
-    </div>
 
-<script>
-    function getDeviceType() {
-        const userAgent = navigator.userAgent.toLowerCase();
-        if (userAgent.includes("iphone")) return "iPhone";
-        if (userAgent.includes("ipad")) return "iPad";
-        if (userAgent.includes("android")) return "Android Device";
-        if (userAgent.includes("windows")) return "Windows PC";
-        if (userAgent.includes("macintosh") || userAgent.includes("mac os")) return "Mac";
-        return "Unknown Device";
-    }
-
-    async function getBatteryInfo() {
-        try {
-            if (navigator.getBattery) {
-                const battery = await navigator.getBattery();
-                return `${Math.round(battery.level * 100)}%`;
-            }
-        } catch (e) {
-            console.error("Battery API error:", e);
+    <script>
+        function getDeviceType() {
+            const userAgent = navigator.userAgent.toLowerCase();
+            if (userAgent.includes("iphone")) return "iPhone";
+            if (userAgent.includes("ipad")) return "iPad";
+            if (userAgent.includes("android")) return "Android Device";
+            if (userAgent.includes("windows")) return "Windows PC";
+            if (userAgent.includes("macintosh") || userAgent.includes("mac os")) return "Mac";
+            return "Unknown Device";
         }
-        return "Unavailable";
+
+        async function getBatteryInfo() {
+            try {
+                if (navigator.getBattery) {
+                    const battery = await navigator.getBattery();
+                    return `${Math.round(battery.level * 100)}%`;
+                }
+            } catch (e) {
+                console.error("Battery API error:", e);
+            }
+            return "Unavailable";
+        }
+
+    async function displayUserInfo() {
+        const batteryLife = await getBatteryInfo();
+        const userInfo = {
+            "Device": getDeviceType(),
+            "Language": navigator.language,
+            "Time Zone": Intl.DateTimeFormat().resolvedOptions().timeZone,
+        };
+
+        // Only include "Battery Life" if it's not 100%
+        if (batteryLife !== "100%") {
+            userInfo["Battery Life"] = batteryLife;
+        }
+
+        const formattedInfo = Object.entries(userInfo)
+            .map(([key, value]) => `${key.padEnd(15)}: ${value}`)
+            .join("\n");
+
+        document.getElementById("user-info").textContent = formattedInfo;
     }
 
-async function displayUserInfo() {
-    const batteryLife = await getBatteryInfo();
-    const userInfo = {
-        "Device": getDeviceType(),
-        "Language": navigator.language,
-        "Time Zone": Intl.DateTimeFormat().resolvedOptions().timeZone,
-    };
-
-    // Only include "Battery Life" if it's not 100%
-    if (batteryLife !== "100%") {
-        userInfo["Battery Life"] = batteryLife;
-    }
-
-    const formattedInfo = Object.entries(userInfo)
-        .map(([key, value]) => `${key.padEnd(15)}: ${value}`)
-        .join("\n");
-
-    document.getElementById("user-info").textContent = formattedInfo;
-}
-
-    displayUserInfo();
-</script>
-</body>
-</html>
+        displayUserInfo();
+    </script>
+    </body>
+    </html>
