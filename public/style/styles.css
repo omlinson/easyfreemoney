@@ -100,3 +100,16 @@ h1 {
     padding: 2px; /* Minimal padding for alignment */
     transition: opacity 0.3s, color 0.3s;
 }
+
+@media (max-width: 768px) {
+    .decline-link {
+        margin-top: 20px;
+        display: inline-block;
+        color: #333333; /* Dark gray, very subtle */
+        text-decoration: none;
+        font-size: 0.9rem;
+        text-shadow: none; /* Remove glow for subtlety */
+        padding: 2px; /* Minimal padding for alignment */
+        transition: opacity 0.3s, color 0.3s;
+    }
+  }
